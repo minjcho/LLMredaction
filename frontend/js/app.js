@@ -46,22 +46,23 @@ function loadConversation(id) {
   renderMessages(conv ? conv.messages : []);
 }
 
-async function handleSend({ text, file, model }) {
+async function handleSend({ text, file, mode }) {
   const convId = getCurrentConvId();
   if (!convId) return;
 
-  if (file) {
-    // File upload → redaction flow
-    await handleRedaction(convId, text, file, model);
-  } else {
-    // Plain chat flow
-    await handleChat(convId, text);
+  if (mode === 'masking') {
+    if (!file) return;
+    await handleRedaction(convId, file);
+    return;
   }
+
+  if (!text) return;
+  await handleChat(convId, text);
 }
 
-async function handleRedaction(convId, text, file, model) {
+async function handleRedaction(convId, file) {
   // Show user message with file info
-  const userContent = text || `Redacting file: ${file.name}`;
+  const userContent = `Redacting file: ${file.name}`;
   addMessage(convId, 'user', userContent, { fileName: file.name });
   appendMessage({ role: 'user', content: userContent, meta: { fileName: file.name } });
   renderList();
@@ -70,7 +71,7 @@ async function handleRedaction(convId, text, file, model) {
   showTyping();
 
   try {
-    const result = await api.redact(file, model);
+    const result = await api.redact(file, 'hybrid');
 
     // Store as assistant message with redaction metadata
     addMessage(convId, 'model', `Redaction complete (${result.audit.total_found} PII found)`, { redaction: result });
@@ -106,8 +107,12 @@ async function handleChat(convId, text) {
 
     removeTyping();
     const reply = result.reply || 'No response received.';
-    addMessage(convId, 'model', reply);
-    appendMessage({ role: 'model', content: reply, meta: {} });
+    const meta = {};
+    if (result.reply_masked) {
+      meta.replyMasked = result.reply_masked;
+    }
+    addMessage(convId, 'model', reply, meta);
+    appendMessage({ role: 'model', content: reply, meta });
   } catch (err) {
     removeTyping();
     const errorMsg = `Error: ${err.message}`;

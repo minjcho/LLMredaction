@@ -47,12 +47,14 @@ async def chat(req: ChatRequest):
     response = client.models.generate_content(**kwargs)
 
     reply = response.text or ""
+    reply_masked = None
 
     # Restore masked tokens in LLM response using the encrypted token map
     if req.doc_id:
         doc = get_doc(req.doc_id)
         if doc and doc.get("envelope_encrypted"):
             envelope = decrypt_envelope(doc["envelope_encrypted"])
+            reply_masked = reply
             reply = restore_text(reply, envelope.token_map)
 
-    return ChatResponse(reply=reply)
+    return ChatResponse(reply=reply, reply_masked=reply_masked)

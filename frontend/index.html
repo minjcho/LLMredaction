@@ -55,7 +55,7 @@
           <div class="welcome__chips">
             <button class="welcome__chip">Upload a document for PII redaction</button>
             <button class="welcome__chip">What types of PII can you detect?</button>
-            <button class="welcome__chip">Explain hybrid detection mode</button>
+            <button class="welcome__chip">Explain masking mode</button>
           </div>
         </div>
 
@@ -82,7 +82,7 @@
 
           <!-- Input row -->
           <div class="input-bar__row">
-            <textarea class="input-bar__textarea" rows="1" placeholder="Type a message or attach a file..."></textarea>
+            <textarea class="input-bar__textarea" rows="1" placeholder="Type a message..."></textarea>
             <div class="input-bar__actions">
               <button class="input-bar__btn input-bar__btn--attach" aria-label="Attach file">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -98,16 +98,11 @@
             <input type="file" class="input-bar__file-input" accept=".txt,.pdf">
           </div>
 
-          <!-- Bottom row: model selector + hint -->
+          <!-- Bottom row: mode selector + hint -->
           <div class="input-bar__bottom-row">
-            <div class="input-bar__model-selector">
-              <span class="input-bar__model-label">Model:</span>
-              <select class="input-bar__model-select">
-                <option value="hybrid">Hybrid</option>
-                <option value="regex">Regex</option>
-                <option value="ner">NER</option>
-                <option value="gemini">Gemini</option>
-              </select>
+            <div class="input-bar__mode-toggle" role="group" aria-label="Mode">
+              <button class="input-bar__mode-btn is-active" type="button" data-mode="chat" aria-pressed="true">Chat</button>
+              <button class="input-bar__mode-btn" type="button" data-mode="masking" aria-pressed="false">Masking</button>
             </div>
             <span class="input-bar__hint">Enter to send, Shift+Enter for newline</span>
           </div>

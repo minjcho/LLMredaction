@@ -5,6 +5,8 @@ import { $ } from './utils.js';
 
 let attachedFile = null;
 let onSend = null;
+let applyModeUi = null;
+let currentMode = 'chat';
 
 export function initInput(sendCallback) {
   onSend = sendCallback;
@@ -16,6 +18,12 @@ export function initInput(sendCallback) {
   const filePreview = $('.input-bar__file-preview');
   const fileRemoveBtn = $('.input-bar__file-remove');
   const fileName = $('.input-bar__file-name');
+  const modeButtons = [...document.querySelectorAll('.input-bar__mode-btn')];
+  const hint = $('.input-bar__hint');
+  const activeModeBtn = modeButtons.find(btn => btn.classList.contains('is-active'));
+  if (activeModeBtn && activeModeBtn.dataset.mode) {
+    currentMode = activeModeBtn.dataset.mode;
+  }
 
   // Auto-expand textarea
   textarea.addEventListener('input', () => {
@@ -53,18 +61,50 @@ export function initInput(sendCallback) {
     clearFile();
   });
 
+  applyModeUi = () => {
+    const isMasking = currentMode === 'masking';
+
+    if (isMasking) {
+      textarea.value = '';
+      textarea.style.height = 'auto';
+      textarea.disabled = true;
+      textarea.placeholder = 'Masking mode: upload a file to redact PII';
+      attachBtn.disabled = false;
+      fileInput.disabled = false;
+      if (hint) hint.textContent = 'Upload a file, then press Send';
+    } else {
+      textarea.disabled = false;
+      textarea.placeholder = 'Type a message...';
+      attachBtn.disabled = true;
+      fileInput.disabled = true;
+      if (attachedFile) clearFile();
+      if (hint) hint.textContent = 'Enter to send, Shift+Enter for newline';
+    }
+
+    updateSendBtn();
+  };
+
+  for (const btn of modeButtons) {
+    btn.addEventListener('click', () => {
+      setMode(btn.dataset.mode, modeButtons);
+      if (applyModeUi) applyModeUi();
+    });
+  }
+
+  setMode(currentMode, modeButtons);
+  applyModeUi();
   updateSendBtn();
 }
 
 function doSend() {
   const textarea = $('.input-bar__textarea');
   const text = textarea.value.trim();
-  const model = $('.input-bar__model-select').value;
 
-  if (!text && !attachedFile) return;
+  if (currentMode === 'masking' && !attachedFile) return;
+  if (currentMode === 'chat' && !text) return;
 
   if (onSend) {
-    onSend({ text, file: attachedFile, model });
+    onSend({ text, file: attachedFile, mode: currentMode });
   }
 
   // Reset
@@ -86,16 +126,32 @@ function clearFile() {
 function updateSendBtn() {
   const textarea = $('.input-bar__textarea');
   const sendBtn = $('.input-bar__btn--send');
-  const hasContent = textarea.value.trim() || attachedFile;
+  const hasContent = currentMode === 'masking' ? Boolean(attachedFile) : Boolean(textarea.value.trim());
   sendBtn.disabled = !hasContent;
 }
 
 /** Set input text programmatically (for suggestion chips) */
 export function setInputText(text) {
+  const modeButtons = [...document.querySelectorAll('.input-bar__mode-btn')];
+  if (currentMode === 'masking') {
+    setMode('chat', modeButtons);
+    if (applyModeUi) applyModeUi();
+  }
+
   const textarea = $('.input-bar__textarea');
   textarea.value = text;
   textarea.style.height = 'auto';
   textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
   textarea.focus();
   updateSendBtn();
+}
+
+function setMode(mode, modeButtons) {
+  if (mode !== 'chat' && mode !== 'masking') return;
+  currentMode = mode;
+  for (const btn of modeButtons) {
+    const active = btn.dataset.mode === mode;
+    btn.classList.toggle('is-active', active);
+    btn.setAttribute('aria-pressed', String(active));
+  }
 }

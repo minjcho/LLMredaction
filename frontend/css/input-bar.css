@@ -50,6 +50,10 @@
   color: var(--text-tertiary);
 }
 
+.input-bar__textarea:disabled {
+  color: var(--text-tertiary);
+}
+
 /* Buttons row */
 .input-bar__actions {
   display: flex;
@@ -75,6 +79,15 @@
 
 .input-bar__btn:hover {
   background: var(--bg-hover);
+}
+
+.input-bar__btn:disabled {
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+.input-bar__btn:disabled:hover {
+  background: none;
 }
 
 .input-bar__btn svg {
@@ -148,7 +161,7 @@
   background: rgba(0, 0, 0, 0.1);
 }
 
-/* Model selector */
+/* Mode selector */
 .input-bar__bottom-row {
   display: flex;
   align-items: center;
@@ -156,31 +169,35 @@
   padding: 0 var(--space-sm);
 }
 
-.input-bar__model-selector {
+.input-bar__mode-toggle {
   display: flex;
   align-items: center;
-  gap: var(--space-xs);
-}
-
-.input-bar__model-label {
-  font-size: var(--font-size-xs);
-  color: var(--text-tertiary);
-}
-
-.input-bar__model-select {
+  gap: 4px;
+  padding: 4px;
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-full);
   background: var(--bg-secondary);
-  padding: var(--space-xs) var(--space-sm);
+}
+
+.input-bar__mode-btn {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  padding: 4px 10px;
   font-size: var(--font-size-xs);
   font-family: var(--font-family);
-  color: var(--text-primary);
   cursor: pointer;
-  outline: none;
+  transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-.input-bar__model-select:focus {
-  border-color: var(--accent);
+.input-bar__mode-btn:hover {
+  background: var(--bg-hover);
+}
+
+.input-bar__mode-btn.is-active {
+  background: var(--accent);
+  color: #fff;
 }
 
 .input-bar__hint {

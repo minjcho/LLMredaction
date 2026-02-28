@@ -3,6 +3,7 @@
  */
 import { $, el, escapeHtml } from './utils.js';
 import { buildRedactionBlock } from './redaction.js';
+import { renderMarkdown } from './markdown.js';
 
 const ICON_FILE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>`;
 
@@ -77,10 +78,29 @@ function appendMessageEl(msg, container) {
     const redactionBlock = buildRedactionBlock(meta.redaction);
     contentDiv.appendChild(redactionBlock);
   } else {
-    // Plain text - convert newlines to <br>
-    const textNode = el('div');
-    textNode.innerHTML = escapeHtml(content).replace(/\n/g, '<br>');
+    const textNode = el('div', { class: 'message__text' });
+    if (isUser) {
+      textNode.innerHTML = escapeHtml(content).replace(/\n/g, '<br>');
+    } else {
+      textNode.innerHTML = renderMarkdown(content);
+    }
     contentDiv.appendChild(textNode);
+
+    // "Show what LLM sees" toggle for assistant messages with masked reply
+    if (!isUser && meta && meta.replyMasked) {
+      const restoredHtml = renderMarkdown(content);
+      const maskedHtml = highlightPiiTokens(escapeHtml(meta.replyMasked));
+
+      let showingMasked = false;
+      const toggleBtn = el('button', { class: 'message__llm-toggle' }, 'Show what LLM sees');
+      toggleBtn.addEventListener('click', () => {
+        showingMasked = !showingMasked;
+        textNode.innerHTML = showingMasked ? maskedHtml : restoredHtml;
+        toggleBtn.textContent = showingMasked ? 'Show restored text' : 'Show what LLM sees';
+        toggleBtn.classList.toggle('message__llm-toggle--active', showingMasked);
+      });
+      contentDiv.appendChild(toggleBtn);
+    }
   }
 
   wrapper.appendChild(contentDiv);
@@ -135,4 +155,13 @@ function scrollToBottom() {
   requestAnimationFrame(() => {
     chatArea.scrollTop = chatArea.scrollHeight;
   });
+}
+
+/**
+ * Highlight [[PII:TYPE:id]] tokens in escaped HTML text
+ */
+function highlightPiiTokens(escapedText) {
+  return escapedText
+    .replace(/\[\[PII:[A-Z_]+:\d+\]\]/g, match => `<span class="pii-token">${match}</span>`)
+    .replace(/\n/g, '<br>');
 }

@@ -46,3 +46,4 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     reply: str
+    reply_masked: str | None = None

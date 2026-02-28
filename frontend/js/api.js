@@ -13,7 +13,7 @@ export async function healthCheck() {
 /**
  * Redact a file
  * @param {File} file - uploaded file
- * @param {string} model - hybrid|regex|ner|gemini
+ * @param {string} model - backend detector (hybrid|regex|ner|gemini)
  * @returns {Promise<{doc_id, masked_text, audit, envelope}>}
  */
 export async function redact(file, model = 'hybrid') {
