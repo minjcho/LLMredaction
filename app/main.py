@@ -1,6 +1,8 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from app.routes import chat, download, redaction, restore
 from app.storage import cleanup
@@ -36,3 +38,11 @@ app.include_router(chat.router)
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+@app.get("/")
+async def serve_spa():
+    return FileResponse("frontend/index.html")
+
+
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
