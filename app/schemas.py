@@ -41,6 +41,7 @@ class RestoreResponse(BaseModel):
 class ChatRequest(BaseModel):
     message: str
     history: list[dict[str, str]] = []
+    doc_id: str | None = None
 
 
 class ChatResponse(BaseModel):

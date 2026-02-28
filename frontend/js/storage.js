@@ -70,6 +70,17 @@ export function deleteConversation(id) {
   saveConversations(convs);
 }
 
+/** Get the doc_id from the most recent redaction in a conversation */
+export function getLastDocId(convId) {
+  const conv = getConversation(convId);
+  if (!conv) return null;
+  for (let i = conv.messages.length - 1; i >= 0; i--) {
+    const docId = conv.messages[i].meta?.redaction?.doc_id;
+    if (docId) return docId;
+  }
+  return null;
+}
+
 /** Get chat history in API format for a conversation */
 export function getChatHistory(convId) {
   const conv = getConversation(convId);

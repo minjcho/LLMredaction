@@ -5,7 +5,7 @@ import { $ } from './utils.js';
 import { initSidebar, setCurrentConvId, getCurrentConvId, renderList } from './sidebar.js';
 import { initInput, setInputText } from './input.js';
 import { renderMessages, appendMessage, showTyping, removeTyping } from './chat.js';
-import { getConversation, createConversation, addMessage, getChatHistory, getConversations } from './storage.js';
+import { getConversation, createConversation, addMessage, getChatHistory, getLastDocId, getConversations } from './storage.js';
 import * as api from './api.js';
 
 function init() {
@@ -101,7 +101,8 @@ async function handleChat(convId, text) {
     const history = getChatHistory(convId);
     // Remove the last user message from history since it's included in the "message" param
     const pastHistory = history.slice(0, -1);
-    const result = await api.chat(text, pastHistory);
+    const docId = getLastDocId(convId);
+    const result = await api.chat(text, pastHistory, docId);
 
     removeTyping();
     const reply = result.reply || 'No response received.';
