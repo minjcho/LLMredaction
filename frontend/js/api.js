@@ -79,11 +79,13 @@ export async function restore(docId, adminKey) {
  * @param {Array<{role:string, content:string}>} history
  * @returns {Promise<{reply: string}>}
  */
-export async function chat(message, history = []) {
+export async function chat(message, history = [], docId = null) {
+  const body = { message, history };
+  if (docId) body.doc_id = docId;
   const res = await fetch(`${BASE}/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message, history }),
+    body: JSON.stringify(body),
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ detail: res.statusText }));
