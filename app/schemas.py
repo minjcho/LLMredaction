@@ -8,7 +8,7 @@ class Span(BaseModel):
     end: int
     type: str
     text: str
-    source: str  # "regex" | "ner" | "llm"
+    source: str  # "regex" | "ner" | "llm"  # noqa: ERA001
     confidence: float = 1.0
 
 
