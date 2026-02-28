@@ -1,0 +1,195 @@
+/* Welcome screen */
+.welcome {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xl);
+  gap: var(--space-lg);
+}
+
+.welcome__logo {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--accent), #8ab4f8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome__logo svg {
+  width: 36px;
+  height: 36px;
+  color: #fff;
+}
+
+.welcome__title {
+  font-size: var(--font-size-2xl);
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.welcome__subtitle {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 480px;
+}
+
+.welcome__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-top: var(--space-md);
+}
+
+.welcome__chip {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-family);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.welcome__chip:hover {
+  background: var(--bg-chip);
+  border-color: var(--accent);
+}
+
+/* Messages container */
+.messages {
+  flex: 1;
+  padding: var(--space-lg) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  max-width: var(--chat-max-width);
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Single message */
+.message {
+  display: flex;
+  gap: var(--space-md);
+  max-width: 100%;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.message--user {
+  flex-direction: row-reverse;
+}
+
+.message__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+}
+
+.message--user .message__avatar {
+  background: var(--accent);
+  color: #fff;
+}
+
+.message--assistant .message__avatar {
+  background: linear-gradient(135deg, var(--accent), #8ab4f8);
+  color: #fff;
+}
+
+.message__content {
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  max-width: 85%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.message--user .message__content {
+  background: var(--bg-user-msg);
+  color: var(--text-primary);
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.message--assistant .message__content {
+  background: var(--bg-assistant-msg);
+  color: var(--text-primary);
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+/* File attachment indicator in message */
+.message__file {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs) var(--space-sm);
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-sm);
+}
+
+.message__file svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Typing indicator */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) 0;
+}
+
+.typing-indicator__dots {
+  display: flex;
+  gap: 4px;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--bg-assistant-msg);
+  border-radius: var(--radius-lg);
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+.typing-indicator__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--text-tertiary);
+  animation: bounce 1.4s infinite ease-in-out;
+}
+
+.typing-indicator__dot:nth-child(1) { animation-delay: 0s; }
+.typing-indicator__dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator__dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-6px); }
+}
+
+/* Scroll anchor */
+.scroll-anchor {
+  height: 1px;
+  flex-shrink: 0;
+}

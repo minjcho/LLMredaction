@@ -1,0 +1,87 @@
+:root {
+  /* Colors - Light theme inspired by Gemini */
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --bg-sidebar: #f0f4f9;
+  --bg-user-msg: #d3e3fd;
+  --bg-assistant-msg: #f0f4f9;
+  --bg-input: #f0f4f9;
+  --bg-hover: #e8eaed;
+  --bg-chip: #e8f0fe;
+
+  --text-primary: #1f1f1f;
+  --text-secondary: #5f6368;
+  --text-tertiary: #80868b;
+  --text-on-primary: #1a73e8;
+
+  --border-color: #e0e0e0;
+  --border-light: #f0f0f0;
+
+  --accent: #1a73e8;
+  --accent-hover: #1557b0;
+  --accent-light: #e8f0fe;
+
+  --danger: #d93025;
+  --success: #1e8e3e;
+  --warning: #f9ab00;
+
+  /* PII highlight colors */
+  --pii-email: #e8f0fe;
+  --pii-email-border: #4285f4;
+  --pii-phone: #fce8e6;
+  --pii-phone-border: #ea4335;
+  --pii-rrn: #fef7e0;
+  --pii-rrn-border: #f9ab00;
+  --pii-person: #e6f4ea;
+  --pii-person-border: #34a853;
+  --pii-brn: #f3e8fd;
+  --pii-brn-border: #a142f4;
+  --pii-plate: #fde7f3;
+  --pii-plate-border: #e52592;
+  --pii-api-key: #e4f7fb;
+  --pii-api-key-border: #12b5cb;
+  --pii-bank: #fff0e1;
+  --pii-bank-border: #fa903e;
+  --pii-default: #f1f3f4;
+  --pii-default-border: #9aa0a6;
+
+  /* Typography */
+  --font-family: 'Google Sans', 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Google Sans Mono', 'Roboto Mono', monospace;
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* Dimensions */
+  --sidebar-width: 260px;
+  --input-max-width: 768px;
+  --chat-max-width: 768px;
+  --header-height: 56px;
+
+  /* Borders */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+}

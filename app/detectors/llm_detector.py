@@ -33,7 +33,7 @@ def detect(text: str, pre_masked_spans: list[Span] | None = None) -> list[Span]:
     client = genai.Client(api_key=settings.GEMINI_API_KEY)
 
     response = client.models.generate_content(
-        model="gemini-2.0-flash",
+        model="gemini-2.5-flash",
         contents=text,
         config=types.GenerateContentConfig(
             system_instruction=_SYSTEM_PROMPT,

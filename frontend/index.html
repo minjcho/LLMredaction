@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Redaction</title>
+  <link rel="stylesheet" href="/static/css/variables.css">
+  <link rel="stylesheet" href="/static/css/layout.css">
+  <link rel="stylesheet" href="/static/css/sidebar.css">
+  <link rel="stylesheet" href="/static/css/chat.css">
+  <link rel="stylesheet" href="/static/css/input-bar.css">
+  <link rel="stylesheet" href="/static/css/redaction.css">
+  <link rel="stylesheet" href="/static/css/responsive.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <button class="sidebar__new-chat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        New Chat
+      </button>
+      <div class="sidebar__section-title">Recent</div>
+      <div class="sidebar__conversations"></div>
+    </aside>
+
+    <!-- Mobile sidebar overlay -->
+    <div class="sidebar-overlay"></div>
+
+    <!-- Main content -->
+    <div class="main">
+      <!-- Header -->
+      <header class="header">
+        <button class="header__menu-btn" aria-label="Toggle sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12h18M3 6h18M3 18h18"/>
+          </svg>
+        </button>
+        <span class="header__title">LLM Redaction</span>
+      </header>
+
+      <!-- Chat area -->
+      <div class="chat-area">
+        <!-- Welcome screen -->
+        <div class="welcome">
+          <div class="welcome__logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h1 class="welcome__title">LLM Redaction</h1>
+          <p class="welcome__subtitle">Upload documents to detect and redact PII, or chat with the AI assistant.</p>
+          <div class="welcome__chips">
+            <button class="welcome__chip">Upload a document for PII redaction</button>
+            <button class="welcome__chip">What types of PII can you detect?</button>
+            <button class="welcome__chip">Explain hybrid detection mode</button>
+          </div>
+        </div>
+
+        <!-- Messages container (populated by JS) -->
+        <div class="messages" style="display:none;"></div>
+      </div>
+
+      <!-- Input bar -->
+      <div class="input-bar">
+        <div class="input-bar__wrapper">
+          <!-- File preview -->
+          <div class="input-bar__file-preview">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+            </svg>
+            <span class="input-bar__file-name"></span>
+            <button class="input-bar__file-remove" aria-label="Remove file">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                <path d="M18 6L6 18M6 6l12 12"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Input row -->
+          <div class="input-bar__row">
+            <textarea class="input-bar__textarea" rows="1" placeholder="Type a message or attach a file..."></textarea>
+            <div class="input-bar__actions">
+              <button class="input-bar__btn input-bar__btn--attach" aria-label="Attach file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
+                </svg>
+              </button>
+              <button class="input-bar__btn input-bar__btn--send" disabled aria-label="Send">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+              </button>
+            </div>
+            <input type="file" class="input-bar__file-input" accept=".txt,.pdf">
+          </div>
+
+          <!-- Bottom row: model selector + hint -->
+          <div class="input-bar__bottom-row">
+            <div class="input-bar__model-selector">
+              <span class="input-bar__model-label">Model:</span>
+              <select class="input-bar__model-select">
+                <option value="hybrid">Hybrid</option>
+                <option value="regex">Regex</option>
+                <option value="ner">NER</option>
+                <option value="gemini">Gemini</option>
+              </select>
+            </div>
+            <span class="input-bar__hint">Enter to send, Shift+Enter for newline</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>
