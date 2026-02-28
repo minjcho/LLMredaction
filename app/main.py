@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -8,6 +9,8 @@ from app.routes import chat, download, redaction, restore
 from app.storage import cleanup
 
 import asyncio
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 async def _periodic_cleanup():
@@ -42,7 +45,7 @@ async def health():
 
 @app.get("/")
 async def serve_spa():
-    return FileResponse("frontend/index.html")
+    return FileResponse(BASE_DIR / "frontend" / "index.html")
 
 
-app.mount("/static", StaticFiles(directory="frontend"), name="static")
+app.mount("/static", StaticFiles(directory=BASE_DIR / "frontend"), name="static")
